@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'breakpoints.dart';
@@ -215,6 +216,8 @@ class _AdaptiveLayoutState extends State<AdaptiveLayout>
 
   Set<String> isAnimating = <String>{};
 
+  Map<String, List<double>> chosenWidgetsWidth = {};
+
   @override
   void initState() {
     if (widget.internalAnimations) {
@@ -301,7 +304,8 @@ class _AdaptiveLayoutState extends State<AdaptiveLayout>
         }
       }
     }
-
+    // print("kfdebug state ${slots.keys}");
+    print("kfdebug state ${chosenWidgetsWidth}");
     return CustomMultiChildLayout(
       delegate: _AdaptiveLayoutDelegate(
         slots: slots,
@@ -314,6 +318,17 @@ class _AdaptiveLayoutState extends State<AdaptiveLayout>
         bodyOrientation: widget.bodyOrientation,
         textDirection: Directionality.of(context) == TextDirection.ltr,
         hinge: hinge,
+        chosenWidgetsWidth: chosenWidgetsWidth,
+        onUpdateChosenWidgets: (String key, double value) {
+          if (chosenWidgetsWidth.containsKey(key)) {
+            if (!chosenWidgetsWidth[key]!.contains(value)) {
+              chosenWidgetsWidth[key]!.add(value);
+              chosenWidgetsWidth[key]!.sort((a,b) => (a-b).toInt());
+            }
+          } else {
+            chosenWidgetsWidth[key] = <double>[value];
+          }
+        }
       ),
       children: entries,
     );
@@ -333,7 +348,7 @@ class _AdaptiveLayoutDelegate extends MultiChildLayoutDelegate {
     required this.internalAnimations,
     required this.bodyOrientation,
     required this.textDirection,
-    this.hinge,
+    this.hinge, required this.chosenWidgetsWidth, required this.onUpdateChosenWidgets,
   }) : super(relayout: controller);
 
   final Map<String, SlotLayout?> slots;
@@ -346,7 +361,13 @@ class _AdaptiveLayoutDelegate extends MultiChildLayoutDelegate {
   final Axis bodyOrientation;
   final bool textDirection;
   final Rect? hinge;
-
+  
+  double lastBottomMargin = 0;
+  double lastHorizonMargin = 0;
+  double lastMinHorizonMargin = 0;
+  
+  final void Function(String key, double value) onUpdateChosenWidgets;
+  final Map<String, List<double>> chosenWidgetsWidth;
   @override
   void performLayout(Size size) {
     double leftMargin = 0;
@@ -399,6 +420,7 @@ class _AdaptiveLayoutDelegate extends MultiChildLayoutDelegate {
         Offset(0, size.height - currentSize.height),
       );
       bottomMargin += currentSize.height;
+
     }
     if (hasChild(_SlotIds.primaryNavigation.name)) {
       final Size childSize = layoutChild(
@@ -406,23 +428,60 @@ class _AdaptiveLayoutDelegate extends MultiChildLayoutDelegate {
         BoxConstraints.loose(size),
       );
       updateSize(_SlotIds.primaryNavigation.name, childSize);
-      final Size currentSize = Tween<Size>(
+      final Tween<Size> tween =Tween<Size>(
         begin: slotSizes[_SlotIds.primaryNavigation.name] ?? Size.zero,
         end: childSize,
-      ).animate(controller).value;
+      );
+      final Size currentSize = tween.animate(controller).value;
+ 
       if (textDirection) {
         positionChild(
           _SlotIds.primaryNavigation.name,
           Offset(leftMargin, topMargin),
         );
-        leftMargin += currentSize.width;
+        leftMargin += currentSize.width; 
+        final double originH = leftMargin;
+        double end = tween.end?.width ??0 ;
+        final double begin =  (tween.begin?.width ?? 0);
+        if (controller.isAnimating && isAnimating.contains(_SlotIds.primaryNavigation.name)) {
+ 
+          if (lastHorizonMargin >= leftMargin) {
+            if (end == begin) {
+              final List<double>? lastWidths = chosenWidgetsWidth[_SlotIds.primaryNavigation.name];
+              if (lastWidths != null) {
+                final int index = max(0, lastWidths.indexOf(end.roundToDouble()) -1);
+                end = lastWidths[index];
+              }
+            }
+            if (end == begin) { 
+              leftMargin =  leftMargin * (1 - controller.value);
+            } else {
+              leftMargin =  end+ (leftMargin - end) * (1 - controller.value);
+            } 
+          } else if (lastHorizonMargin != 0){
+
+            onUpdateChosenWidgets.call(_SlotIds.primaryNavigation.name, end);
+            onUpdateChosenWidgets.call(_SlotIds.primaryNavigation.name, begin);
+          }
+        }  
+        lastHorizonMargin = originH;
       } else {
         positionChild(
           _SlotIds.primaryNavigation.name,
           Offset(size.width - currentSize.width, topMargin),
         );
-        rightMargin += currentSize.width;
+        rightMargin += currentSize.width; 
+        // final double originH = rightMargin;
+        // if (lastHorizonMargin >= leftMargin) {
+        //   rightMargin =  rightMargin * (controller.value);
+        // } 
+        // lastHorizonMargin = originH;
+      } 
+      final double originB = bottomMargin;
+      if (lastBottomMargin >= bottomMargin && controller.isAnimating) {
+        bottomMargin = bottomMargin * (1 - controller.value);
       }
+      lastBottomMargin = originB;
     }
     if (hasChild(_SlotIds.secondaryNavigation.name)) {
       final Size childSize = layoutChild(

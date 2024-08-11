@@ -254,6 +254,9 @@ class _MyHomePageState extends State<MyHomePage>
                 // Every SlotLayoutConfig takes a key and a builder. The builder
                 // is to save memory that would be spent on initialization.
                 key: const Key('primaryNavigation'),
+                
+                inAnimation: AdaptiveScaffold.leftOutIn,
+                outAnimation: AdaptiveScaffold.leftInOut,
                 builder: (_) {
                   return AdaptiveScaffold.standardNavigationRail(
                     // Usually it would be easier to use a builder from
@@ -303,6 +306,8 @@ class _MyHomePageState extends State<MyHomePage>
                 key: const Key('Large primaryNavigation'),
                 // The AdaptiveScaffold builder here greatly simplifies
                 // navigational elements.
+                inAnimation: AdaptiveScaffold.leftOutIn,
+                outAnimation: AdaptiveScaffold.leftInOut,
                 builder: (_) => AdaptiveScaffold.standardNavigationRail(
                   leading: const _LargeComposeIcon(),
                   onDestinationSelected: (int index) {
@@ -328,6 +333,7 @@ class _MyHomePageState extends State<MyHomePage>
                 // The conditional here is for navigation screens. The first
                 // screen shows the main screen and every other screen shows
                 //  ExamplePage.
+                outAnimation: AdaptiveScaffold.fadeOut,
                 builder: (_) => (_navigationIndex == 0)
                     ? Padding(
                         padding: const EdgeInsets.fromLTRB(0, 32, 0, 0),
@@ -380,6 +386,7 @@ class _MyHomePageState extends State<MyHomePage>
     required IconData icon,
     required String label,
   }) {
+    
     return NavigationRailDestination(
       icon: SlideTransition(
         position: Tween<Offset>(
