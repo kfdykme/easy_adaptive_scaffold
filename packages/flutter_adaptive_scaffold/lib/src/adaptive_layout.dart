@@ -304,8 +304,7 @@ class _AdaptiveLayoutState extends State<AdaptiveLayout>
         }
       }
     }
-    // print("kfdebug state ${slots.keys}");
-    print("kfdebug state ${chosenWidgetsWidth}");
+    
     return CustomMultiChildLayout(
       delegate: _AdaptiveLayoutDelegate(
         slots: slots,

@@ -330,6 +330,7 @@ class AdaptiveScaffold extends StatefulWidget {
     required List<NavigationDestination> destinations,
     int? currentIndex,
     double iconSize = 24,
+    Color? backgroundColor,
     ValueChanged<int>? onDestinationSelected,
   }) {
     return Builder(
@@ -350,6 +351,7 @@ class AdaptiveScaffold extends StatefulWidget {
           child: MediaQuery(
             data: MediaQuery.of(context).removePadding(removeTop: true),
             child: NavigationBar(
+              backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.surface,
               selectedIndex: currentIndex ?? 0,
               destinations: destinations,
               onDestinationSelected: onDestinationSelected,

@@ -1,17 +1,17 @@
 
 
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 
-class EasyAdaptiveScaffold extends StatefulWidget {
+// class EasyAdaptiveScaffold extends StatefulWidget {
 
-  @override
-  State<StatefulWidget> createState() {
-    return EasyAdaptiveScaffoldState();
-  }
-}
+//   @override
+//   State<StatefulWidget> createState() {
+//     return EasyAdaptiveScaffoldState();
+//   }
+// }
 
-class EasyAdaptiveScaffoldState extends State<EasyAdaptiveScaffold> {
-  @override
-  Widget build(BuildContext context) {
-  }
-}
+// class EasyAdaptiveScaffoldState extends State<EasyAdaptiveScaffold> {
+//   @override
+//   Widget build(BuildContext context) {
+//   }
+// }
