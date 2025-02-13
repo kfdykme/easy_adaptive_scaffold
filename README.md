@@ -6,6 +6,6 @@ fix some bug of https://github.com/flutter/packages ,flutter_adaptive_scaffold w
 
 # BugFix
 - Animation Bug while use both AdaptiveScaffold and AdaptiveLayout
-# Features todo
-- Make easy to use
-- hook router to push or open second layout
+# Features 
+- Make easy to use [DONE]
+- hook router to push or open second layout [TODO]
