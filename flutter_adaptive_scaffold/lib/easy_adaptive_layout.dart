@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'flutter_adaptive_scaffold.dart';
 
 class EasyAdaptiveLayoutNavItemConfig {
@@ -51,9 +50,10 @@ class EasyAdaptiveLayoutState extends State<EasyAdaptiveLayout> {
   int selectedIndex = 0;
 
   List<NavigationRailDestination> buildMediumNav() {
-    return widget.navConfigs.mapIndexed((index, i) {
-      
-      return NavigationRailDestination(
+    List<NavigationRailDestination> mediumsList = [];
+    for(var index = 0; index < widget.navConfigs.length; index++) {
+      final i = widget.navConfigs[index];
+      final item =  NavigationRailDestination(
         label: Text(
           i.title,
           style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
@@ -66,7 +66,10 @@ class EasyAdaptiveLayoutState extends State<EasyAdaptiveLayout> {
                 : i.icon ?? Text(i.title)) ??
             Text(i.title),
       );
-    }).toList();
+      mediumsList.add(item);
+    }
+
+    return mediumsList;
   }
 
   List<NavigationDestination> buildBottom() {

@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_adaptive_scaffold/src/breakpoints.dart';
+import 'package:easy_adaptive_scaffold/src/breakpoints.dart';
 
 class TestBreakpoint0 extends Breakpoint {
   @override

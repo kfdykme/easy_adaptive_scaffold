@@ -12,25 +12,28 @@ renders your Flutter application according to the
 [Material 3](https://m3.material.io/foundations/adaptive-design/overview)
 guidelines.
 # Prview 
-![Image](https://raw.githubusercontent.com/kfdykme/easy_adaptive_scaffold/assets/preview_1.gif) 
+![Image](https://github.com/kfdykme/easy_adaptive_scaffold/blob/e0aedc6a15b8d992abbe19519a7c7bc75d789380/assets/preview_1.gif) 
 
 # Example Usage
 ``` dart
+  
   
   List<EasyAdaptiveLayoutNavItemConfig> initConfigs() {
     return List.filled(10,1).map((i){
       String title = (Random().nextInt(10000) + 1000).toRadixString(16);
       return EasyAdaptiveLayoutNavItemConfig(title: title, icon:  const Icon(Icons.abc), builder: (context) {
-        return Text(title);
+        return MaterialApp(home: Container(color: Theme.of(context).colorScheme.surfaceContainerHigh, child: 
+          Material(child: Text(title),)
+        ,),);
       },);
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return EasyAdaptiveLayout(
+    return MaterialApp(home: EasyAdaptiveLayout(
       navConfigs: initConfigs(),
-    );
+    ),);
   }
 ```
 

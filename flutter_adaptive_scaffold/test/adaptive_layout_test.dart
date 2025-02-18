@@ -3,9 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_scaffold/src/adaptive_layout.dart';
-import 'package:flutter_adaptive_scaffold/src/breakpoints.dart';
-import 'package:flutter_adaptive_scaffold/src/slot_layout.dart';
+import 'package:easy_adaptive_scaffold/src/adaptive_layout.dart';
+import 'package:easy_adaptive_scaffold/src/breakpoints.dart';
+import 'package:easy_adaptive_scaffold/src/slot_layout.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
