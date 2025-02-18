@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_adaptive_scaffold:
+  easy_adaptive_scaffold:
     path: ..
 
 dev_dependencies:

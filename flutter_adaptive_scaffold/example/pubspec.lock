@@ -169,6 +169,13 @@ packages:
       url: "https://mirrors.tencent.com/dart-pub/"
     source: hosted
     version: "2.3.6"
+  easy_adaptive_scaffold:
+    dependency: "direct main"
+    description:
+      path: ".."
+      relative: true
+    source: path
+    version: "0.1.12"
   fake_async:
     dependency: transitive
     description:
@@ -198,13 +205,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_adaptive_scaffold:
-    dependency: "direct main"
-    description:
-      path: ".."
-      relative: true
-    source: path
-    version: "0.1.11+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
